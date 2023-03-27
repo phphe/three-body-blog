@@ -1,0 +1,70 @@
+---
+import Disqus from "@/components/Disqus.astro";
+import FormattedDate from "@/components/FormattedDate.astro";
+import { DISQUS_ID } from "@/consts";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { toSlug } from "@/plugins/utils";
+import { CollectionEntry, getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+type Props = CollectionEntry<"posts">;
+
+const post = Astro.props;
+const { Content } = await post.render();
+---
+
+<BaseLayout htmlTitle={post.data.title} htmlDescription={post.data.description}>
+  <div class="page-post bg-white shadow p-4">
+    <div class="post-header">
+      <div class="post-title">
+        <h1 class="text-3xl font-bold">{post.data.title}</h1>
+      </div>
+      <div class="post-meta mt-5 text-a1 opacity-70">
+        <small><FormattedDate date={post.data.pubDate} /></small>
+      </div>
+    </div>
+    <div class="post-body mt-4">
+      {
+        post.data.cover && (
+          <div class="flex justify-center mb-4">
+            <img class="rounded" src={post.data.cover} alt={post.data.title} />
+          </div>
+        )
+      }
+      <div class="post-content prose max-w-none prose-img:rounded">
+        <Content />
+      </div>
+    </div>
+    <div class="post-footer">
+      {
+        post.data.tags?.length > 0 && (
+          <div class="post-tags mt-4">
+            {post.data.tags.map((tag) => (
+              <a
+                class="post-tag mr-2 inline-flex items-center leading-sm px-3 py-1 rounded-md bg-white text-gray-600 border font-medium "
+                href={`/tags/${toSlug(tag)}`}
+              >
+                {tag}
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </div>
+    <div class="post-comments mt-10">
+      <Disqus id={DISQUS_ID} />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .post-tag {
+    font-size: 14px;
+  }
+</style>

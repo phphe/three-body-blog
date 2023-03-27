@@ -1,0 +1,16 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
+
+const today = new Date();
+---
+
+<footer class="mt-4 text-gray-500">
+  &copy; {today.getFullYear()}
+  {SITE_TITLE}. All rights reserved.
+</footer>
+<style>
+  footer {
+    padding: 25px;
+    text-align: center;
+  }
+</style>

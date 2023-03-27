@@ -1,0 +1,61 @@
+---
+---
+
+<span class="back-top hover-grey cursor-pointer" title="Back to Top">
+  <img src="/favicon.png" />
+</span>
+
+<script>
+  import * as hp from "helper-js";
+
+  let el = document.querySelector(".back-top")! as HTMLElement;
+  let animateDistance = 0;
+  const updateAnimateDistance = () => {
+    animateDistance =
+      window.innerHeight - el.getBoundingClientRect().bottom - 10;
+  };
+  updateAnimateDistance();
+  hp.on(window, "resize", updateAnimateDistance);
+  //
+  let scrollEl = document.scrollingElement!;
+  let lastScrollTop = 0;
+  let tm: NodeJS.Timeout | null;
+  let firstTranslate = true;
+  const updateTranslate = () => {
+    let dir = scrollEl.scrollTop - lastScrollTop > 0;
+    lastScrollTop = scrollEl.scrollTop;
+    let rate =
+      scrollEl.scrollTop / (scrollEl.scrollHeight - scrollEl.clientHeight);
+    el.style.translate = `0px ${animateDistance * rate}px`;
+    let rotate = 0;
+    if (!firstTranslate) rotate = dir ? 0 : 180;
+    el.style.rotate = rotate + "deg";
+    firstTranslate = false;
+    if (tm) {
+      clearTimeout(tm);
+      tm = null;
+    }
+    tm = setTimeout(() => {
+      el.style.rotate = "0deg";
+    }, 2000);
+  };
+  updateTranslate();
+  hp.on(window, "scroll", updateTranslate, { passive: true });
+  //
+  hp.on(el, "click", () => {
+    document.body.scrollIntoView({ behavior: "smooth" });
+  });
+</script>
+
+<style>
+  .back-top {
+    position: fixed;
+    right: 10px;
+    top: 30px;
+    color: #a7a7a7;
+    transform: scale(0.8, 1);
+  }
+  .back-top img {
+    width: 30px;
+  }
+</style>

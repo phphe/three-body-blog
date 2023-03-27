@@ -1,0 +1,36 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
+import { getCollection } from "astro:content";
+import PostsList from "@/parts/PostsList.astro";
+import { GetStaticPaths } from "astro";
+import Pagination from "@/components/Pagination.astro";
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const posts = (await getCollection("posts")).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+  return paginate(posts, {
+    pageSize: 10,
+  });
+};
+const { page } = Astro.props;
+const getPageURL = (n: number) => `/posts` + (n > 1 ? `/${n}` : "");
+---
+
+<BaseLayout
+  htmlTitle={`Page ${page.currentPage} - All Posts`}
+  htmlDescription={SITE_DESCRIPTION}
+>
+  <div class="part-title uppercase">All Posts</div>
+  <div class="mt-4">
+    <PostsList posts={page.data} />
+  </div>
+  {
+    page.total > page.size && (
+      <div class="mt-8 text-center">
+        <Pagination page={page} getPageURL={getPageURL} />
+      </div>
+    )
+  }
+</BaseLayout>

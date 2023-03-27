@@ -1,0 +1,71 @@
+---
+import FormattedDate from "@/components/FormattedDate.astro";
+import type { CollectionEntry } from "astro:content";
+import { mdiCalendar, mdiMore } from "@mdi/js";
+import Icon from "@/components/Icon.astro";
+
+type Props = { posts: CollectionEntry<"posts">[] };
+
+const { posts } = Astro.props;
+---
+
+{
+  posts.map((item, index) => (
+    <div
+      class={`post-card ${
+        index > 0 && "mt-4"
+      } bg-white rounded p-4 shadow flex`}
+    >
+      {item.data.cover && (
+        <div
+          class="post-cover mr-4"
+          style={`background-image: url("${item.data.cover}");`}
+        />
+      )}
+      <div class="post-texts flex-grow">
+        <div>
+          <a
+            class="text-xl font-semibold text-a1 hover-grey"
+            href={`/posts/${item.slug}`}
+          >
+            {item.data.title}
+          </a>
+        </div>
+        <div class="post-description flex-grow text-a1 py-1">
+          <div class="line-clamp-2">{item.data.description}</div>
+        </div>
+        <div class="post-meta flex justify-between text-sm">
+          <a
+            class="hover-grey font-semibold uppercase text-a1 opacity-80"
+            href={`/posts/${item.slug}/`}
+          >
+            Continue Reading
+            <Icon class="ml-1 rotate-180 top-px relative" path={mdiMore} />
+          </a>
+          <span class="post-date text-a1 opacity-70">
+            <Icon path={mdiCalendar} class="top-px relative" />
+            <FormattedDate date={item.data.pubDate} />
+          </span>
+        </div>
+      </div>
+    </div>
+  ))
+}
+<style>
+  .post-cover {
+    width: 120px;
+    height: 120px;
+    aspect-ratio: 1/1;
+    background-size: cover;
+    background-position: center;
+    @apply rounded;
+  }
+  .post-texts {
+    display: flex;
+    flex-direction: column;
+  }
+  .post-description {
+    font-size: 0.9em;
+    min-height: 60px;
+  }
+</style>

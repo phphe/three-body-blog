@@ -1,0 +1,38 @@
+---
+export interface Props {
+  path: string;
+  size?: number | string;
+  class?: string;
+  style?: string;
+}
+
+const props = Astro.props;
+let style = "";
+if (props.size != null) {
+  style += `width: ${
+    typeof props.size === "number" ? props.size + "px" : props.size
+  };`;
+}
+style += props.style ?? "";
+---
+
+<span class={`icon icon-mdi ${props.class}`} style={style}>
+  <span data-nosnippet>{"\u200b"}</span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d={props.path}></path>
+  </svg>
+</span>
+<style>
+  .icon-mdi {
+    display: inline-flex;
+    width: 1em;
+  }
+  .icon [data-nosnippet] {
+    user-select: none;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    fill: currentColor;
+  }
+</style>

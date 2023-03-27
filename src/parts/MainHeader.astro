@@ -1,0 +1,49 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
+
+const menu = [
+  { text: "Home", url: "/" },
+  { text: "Opinions", url: "/tags/opinion" },
+  { text: "Videos", url: "/tags/video" },
+  { text: "Music", url: "/tags/music" },
+  { text: "Series", url: "/tags/series" },
+  { text: "About", url: "/about" },
+];
+---
+
+<div class="main-header bg-white">
+  <div class="text-center py-4 border-b">
+    <a class="text-2xl font-semibold" href="/">
+      <img class="site-logo" src="/assets/img/logo.png" alt={SITE_TITLE} />
+    </a>
+    <div class="mt-1 text-gray-500">{SITE_DESCRIPTION}</div>
+  </div>
+</div>
+<div class="main-menu-nav bg-white shadow">
+  <div class="container mx-auto grid">
+    <ul class="main-menu flex justify-self-center text-a1">
+      {
+        menu.map((item) => (
+          <li class="px-3 py-3 font-medium">
+            <a class="hover-grey" href={item.url}>
+              {item.text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+<style>
+  .site-logo {
+    width: 400px;
+    display: inline;
+  }
+  /* .main-menu-nav {
+    position: sticky;
+    top: 0;
+  } */
+  .main-menu {
+    letter-spacing: 1px;
+  }
+</style>

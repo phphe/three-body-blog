@@ -1,0 +1,45 @@
+---
+import { getPostsBySlugs } from "@/plugins/utils";
+import { getCollection } from "astro:content";
+
+const posts = await getPostsBySlugs(["my-three-body-zhangbeihai"]);
+---
+
+<div class="EditorPicks">
+  <div class="part-title uppercase">Editors Picks</div>
+  <div class="mt-4 bg-white rounded p-4 shadow">
+    {
+      posts.map((item, index) => (
+        <div class={`post-card ${index > 0 && "mt-4"} border-b`}>
+          {item.data.cover && (
+            <a
+              class="post-cover mb-2 block"
+              style={`background-image: url("${item.data.cover}");`}
+              href={`/posts/${item.slug}/`}
+            />
+          )}
+          <div class="post-texts">
+            <a
+              class="font-medium text-sm text-a1 hover-grey"
+              href={`/posts/${item.slug}/`}
+            >
+              {item.data.title}
+            </a>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .post-cover {
+    width: 100%;
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+    @apply rounded;
+  }
+  .post-texts {
+  }
+</style>

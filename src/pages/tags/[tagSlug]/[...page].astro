@@ -1,0 +1,48 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import PostsList from "@/parts/PostsList.astro";
+import * as hp from "helper-js";
+import Pagination from "@/components/Pagination.astro";
+import { toSlug } from "@/plugins/utils";
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const posts = await getCollection("posts");
+  let tags = [];
+  for (const post of posts) {
+    tags.push(...post.data.tags);
+  }
+  tags = hp.arrayDistinct(tags, (tag) => tag);
+  return tags.map((tag) => {
+    const filteredPosts = posts.filter((post) => post.data.tags.includes(tag));
+    return paginate(filteredPosts, {
+      params: { tagSlug: toSlug(tag) },
+      pageSize: 10,
+      props: { tag },
+    });
+  });
+};
+
+const { page, tag } = Astro.props;
+const { tagSlug } = Astro.params;
+const getPageURL = (n: number) => `/tag/${tagSlug}` + (n > 1 ? `/${n}` : "");
+---
+
+<BaseLayout
+  htmlTitle={`${tag} - Tag` +
+    (page.currentPage > 1 ? `Page ${page.currentPage}` : "")}
+  htmlDescription={`The posts with tag ${tag}`}
+>
+  <div class="page-tag">
+    <h1 class="mb-4 text-2xl font-semibold text-a1">Posts by Tag: {tag}</h1>
+    <PostsList posts={page.data} />
+    {
+      page.total > page.size && (
+        <div class="mt-8 text-center">
+          <Pagination page={page} getPageURL={getPageURL} />
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

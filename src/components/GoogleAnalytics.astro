@@ -1,0 +1,23 @@
+---
+export interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<!-- Google tag (gtag.js) -->
+<script
+  is:inline
+  async
+  src={`https://www.googletagmanager.com/gtag/js?id=${id}`}
+></script>
+<script is:inline data-gid={id}>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  var gid = document.querySelector(`script[data-gid]`).getAttribute("data-gid");
+  gtag("config", gid);
+</script>

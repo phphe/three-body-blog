@@ -1,0 +1,159 @@
+---
+import { mdiChevronLeft, mdiChevronRight, mdiDotsHorizontal } from "@mdi/js";
+import type { Page } from "astro";
+import Icon from "./Icon.astro";
+import * as hp from "helper-js";
+
+export interface Props {
+  page: Page;
+  getPageURL: (page: number) => string
+}
+
+type PaginationButton = {
+  text: string;
+  page: number;
+  current?: boolean;
+  prev?: boolean;
+  next?: boolean;
+  center?: boolean;
+  omit?: boolean;
+};
+const getPaginationButtons = ({
+  currentPage,
+  total,
+  pageSize,
+  maxButtonCount,
+}: {
+  currentPage: number;
+  total: number;
+  pageSize: number;
+  maxButtonCount: number; // minimum is 7
+}) => {
+  const pageCount = Math.ceil(total / pageSize);
+  const leftBtns: PaginationButton[] = (() => {
+    const items = [];
+    if (currentPage > 1) {
+      items.push({
+        text: "«",
+        page: currentPage - 1,
+        prev: true,
+      });
+      items.push({
+        text: "1",
+        page: 1,
+      });
+    }
+    return items;
+  })();
+  const rightBtns: PaginationButton[] = (() => {
+    const items = [];
+    if (currentPage < pageCount) {
+      items.push({
+        text: pageCount + "",
+        page: pageCount,
+      });
+      items.push({
+        text: "»",
+        page: currentPage + 1,
+        next: true,
+      });
+    }
+    return items;
+  })();
+  const pageBtns: PaginationButton[] = (() => {
+    // clone
+    // const leftBtns = leftBtns.slice(0);
+    // const rightBtns = rightBtns.slice(0);
+    const centerBtns: PaginationButton[] = [
+      {
+        text: currentPage + "",
+        page: currentPage,
+      },
+    ];
+    // complete centerBtns
+    const max = maxButtonCount < 7 ? 7 : maxButtonCount;
+    let rest = max - leftBtns.length - rightBtns.length - centerBtns.length;
+    let leftPage = currentPage - 1;
+    let rightPage = currentPage + 1;
+    while (rest > 0 && (leftPage > 1 || rightPage < pageCount)) {
+      if (leftPage > 1) {
+        centerBtns.splice(0, 0, {
+          text: leftPage + "",
+          page: leftPage,
+        });
+        rest--;
+      }
+      if (rest <= 0) break;
+      if (rightPage < pageCount) {
+        centerBtns.push({
+          text: rightPage + "",
+          page: rightPage,
+        });
+        rest--;
+      }
+      leftPage--;
+      rightPage++;
+    }
+    const centerFirst = hp.arrayFirst(centerBtns)!;
+    const centerLast = hp.arrayLast(centerBtns)!;
+    if (centerFirst.page < currentPage && centerFirst.page > 2) {
+      centerFirst.text = "…";
+      centerFirst.omit = true;
+    }
+    if (currentPage < centerLast.page && centerLast.page < pageCount - 1) {
+      centerLast.text = "…";
+      centerLast.omit = true;
+    }
+    const pageBtns = [...leftBtns, ...centerBtns, ...rightBtns];
+    for (const btn of pageBtns) {
+      if (btn.page === currentPage) {
+        btn.current = true;
+      }
+    }
+    return pageBtns;
+  })();
+  return pageBtns;
+};
+
+const {page, getPageURL} = Astro.props;
+const buttons = getPaginationButtons({
+  currentPage: page.currentPage,
+  total: page.total,
+  pageSize: page.size,
+  maxButtonCount: 11,
+});
+// no undefined. return only string
+const nu = (str: string | undefined | boolean) => str ?? "";
+---
+
+<nav class="isolate inline-flex" aria-label="Pagination">
+  {
+    buttons.map((btn, i) => (
+      <a
+        href={getPageURL(btn.page)}
+        class={`pagination-btn ${nu(btn.current && "pagination-btn--active")}`}
+      >
+        {btn.prev ? (
+            <span class="sr-only">Previous</span>
+            <Icon path={mdiChevronLeft} size={22} />
+        ) : (btn.next ? (
+            <span class="sr-only">Next</span>
+            <Icon path={mdiChevronRight} size={22} />
+        ) : (btn.omit ? <Icon path={mdiDotsHorizontal} size={22} /> : btn.text))}
+      </a>
+    ))
+  }
+</nav>
+<style>
+  .pagination-btn {
+    @apply inline-flex justify-center items-center;
+    @apply hover:ring-1 ring-gray-400 ring-inset;
+    @apply border w-9 h-9 ml-1 bg-white text-gray-600 rounded;
+  }
+  .pagination-btn:first-child {
+    margin-left: 0;
+  }
+  .pagination-btn--active {
+    @apply bg-blue-400 text-white;
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+import "@/styles/global.css";
+import BaseHead from "../components/BaseHead.astro";
+import { SITE_TITLE, GOOGLE_ANALYTICS_ID } from "@/consts";
+import GoogleAnalytics from "@/components/GoogleAnalytics.astro";
+
+type Props = { htmlTitle: string; htmlDescription: string };
+const { htmlTitle, htmlDescription } = Astro.props;
+const title = `${htmlTitle}${
+  htmlTitle === SITE_TITLE ? "" : ` - ${SITE_TITLE}`
+}`;
+---
+
+<html lang="en">
+  <head>
+    {GOOGLE_ANALYTICS_ID && <GoogleAnalytics id={GOOGLE_ANALYTICS_ID} />}
+    <BaseHead title={title} description={htmlDescription} />
+    <slot name="head" />
+  </head>
+  <body class="font-default">
+    <slot />
+  </body>
+</html>
