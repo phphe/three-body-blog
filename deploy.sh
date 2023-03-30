@@ -5,6 +5,7 @@ set -e
 
 # 进入生成的文件夹
 cd dist
+rm .git -rf
 # use git lfs
 cp ../.gitattributes ./
 # custom domain
