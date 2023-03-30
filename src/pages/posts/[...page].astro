@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
+import { SITE_DESCRIPTION, LIST_SIZE } from "@/consts";
 import { getCollection } from "astro:content";
 import PostsList from "@/parts/PostsList.astro";
 import { GetStaticPaths } from "astro";
@@ -11,7 +11,7 @@ export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   );
   return paginate(posts, {
-    pageSize: 10,
+    pageSize: LIST_SIZE,
   });
 };
 const { page } = Astro.props;

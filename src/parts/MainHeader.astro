@@ -16,16 +16,16 @@ const menu = [
     <a class="text-2xl font-semibold" href="/">
       <img class="site-logo" src="/assets/img/logo.png" alt={SITE_TITLE} />
     </a>
-    <div class="mt-1 text-gray-500">{SITE_DESCRIPTION}</div>
+    <div class="mt-1 text-gray-500 max-sm:hidden">{SITE_DESCRIPTION}</div>
   </div>
 </div>
 <div class="main-menu-nav bg-white shadow">
   <div class="container mx-auto grid">
-    <ul class="main-menu flex justify-self-center text-a1">
+    <ul class="main-menu flex justify-self-center text-gray-600">
       {
         menu.map((item) => (
-          <li class="px-3 py-3 font-medium">
-            <a class="hover-grey" href={item.url}>
+          <li class="main-menu-item px-3 py-3">
+            <a class="hover-gray hover:font-medium" href={item.url}>
               {item.text}
             </a>
           </li>
@@ -39,11 +39,20 @@ const menu = [
     width: 400px;
     display: inline;
   }
-  /* .main-menu-nav {
-    position: sticky;
-    top: 0;
-  } */
   .main-menu {
     letter-spacing: 1px;
+  }
+  @media (max-width: 500px) {
+    .site-logo {
+      width: 70%;
+      display: inline;
+    }
+    .main-menu {
+      letter-spacing: 0px;
+      @apply text-sm;
+    }
+    .main-menu-item {
+      @apply px-1 py-2 font-normal;
+    }
   }
 </style>

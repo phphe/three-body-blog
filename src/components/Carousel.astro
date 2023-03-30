@@ -1,0 +1,82 @@
+---
+import { mdiChevronLeft, mdiChevronRight } from "@mdi/js";
+import Icon from "./Icon.astro";
+---
+
+<div class="carousel carousel-unready relative">
+  <div class="carousel-inner">
+    <slot />
+    <!-- <div class="carousel-item bg-black"></div>
+    <div class="carousel-item bg-blue-400"></div>
+    <div class="carousel-item bg-yellow-400"></div>
+    <div class="carousel-item bg-sky-400"></div> -->
+  </div>
+  <button class="carousel-action carousel-prev">
+    <Icon path={mdiChevronLeft} size={26} />
+  </button>
+  <button class="carousel-action carousel-next">
+    <Icon path={mdiChevronRight} size={26} />
+  </button>
+</div>
+
+<style>
+  .carousel-unready {
+    visibility: hidden;
+  }
+  .carousel-action {
+    @apply bg-white shadow rounded-full w-10 h-10 flex items-center justify-center border text-gray-500 absolute hover:bg-gray-100 hover:shadow-md;
+    top: calc((100% - 40px) / 2);
+  }
+  .carousel-prev {
+    left: -15px;
+  }
+  .carousel-next {
+    right: -15px;
+  }
+</style>
+<script>
+  // @ts-ignore
+  import Siema from "siema";
+  import * as hp from "helper-js";
+
+  let carouselSiema = new Siema({
+    selector: ".carousel-inner",
+    duration: 500,
+    easing: "ease-out",
+    perPage: 1,
+    startIndex: 0,
+    draggable: true,
+    multipleDrag: true,
+    threshold: 20,
+    loop: true,
+    rtl: false,
+    onInit: () => {},
+    onChange: () => {},
+  });
+  hp.removeClass(document.querySelector(".carousel")!, "carousel-unready");
+  hp.on(document.querySelector(".carousel-prev")!, "click", () =>
+    carouselSiema.prev()
+  );
+  hp.on(document.querySelector(".carousel-next")!, "click", () =>
+    carouselSiema.next()
+  );
+
+  function autoPlay() {
+    let t: NodeJS.Timeout;
+    const waitAndPlayNext = (time = 5000) => {
+      t = setTimeout(() => {
+        carouselSiema.next();
+        waitAndPlayNext();
+      }, time);
+    };
+    waitAndPlayNext();
+    let el = document.querySelector(".carousel")!;
+    const stop = () => clearTimeout(t);
+    const continuePlay = () => waitAndPlayNext(2000);
+    hp.on(el, "mouseenter", stop);
+    hp.on(el, "touchstart", stop);
+    hp.on(el, "mouseleave", continuePlay);
+    hp.on(el, "touchend", continuePlay);
+  }
+  // autoPlay();
+</script>

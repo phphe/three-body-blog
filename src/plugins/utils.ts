@@ -21,15 +21,12 @@ export function toSlug(str: string) {
   return str;
 }
 
-export async function getTags() {
-  const posts = await getCollection("posts");
-  let tags = [];
-  for (const post of posts) {
-    tags.push(...post.data.tags);
-  }
-  tags = hp.arrayDistinct(tags, (tag) => tag);
-  return tags;
-}
-
 // no undefined, boolean. return only string
 export const css = (str: string | undefined | boolean) => str ?? "";
+
+export function capitalize(str: string) {
+  return str
+    .split(" ")
+    .map((v) => v.charAt(0).toUpperCase() + v.slice(1))
+    .join(" ");
+}

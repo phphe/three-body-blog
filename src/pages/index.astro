@@ -5,21 +5,25 @@ import { getCollection } from "astro:content";
 import PostsList from "@/parts/PostsList.astro";
 import { mdiArrowRight } from "@mdi/js";
 import Icon from "@/components/Icon.astro";
+import HomeCarousel from "@/parts/HomeCarousel.astro";
 
 const posts = (await getCollection("posts"))
-  .slice(0, 10)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 10);
 ---
 
 <BaseLayout htmlTitle={SITE_TITLE} htmlDescription={SITE_DESCRIPTION}>
+  <div slot="main-body-top" class="mb-8">
+    <HomeCarousel />
+  </div>
   <div class="part-title uppercase">Latest Posts</div>
   <div class="mt-4">
     <PostsList posts={posts} />
   </div>
-  <div class="mt-4 text-center">
-    <a class="inline-flex items-center" href="/posts"
+  <div class="mt-8 text-center">
+    <a class="inline-flex items-center text-xl" href="/posts"
       >All Posts
-      <Icon class="ml-3 relative top-px" path={mdiArrowRight} size={22} />
+      <Icon class="ml-3 relative top-px" path={mdiArrowRight} size={26} />
     </a>
   </div>
 </BaseLayout>

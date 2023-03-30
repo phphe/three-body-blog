@@ -1,26 +1,29 @@
 ---
+import AspectBox from "@/components/AspectBox.astro";
+import { EDITORS_CHOICE } from "@/consts";
 import { getPostsBySlugs } from "@/plugins/utils";
-import { getCollection } from "astro:content";
 
-const posts = await getPostsBySlugs(["my-three-body-zhangbeihai"]);
+const posts = await getPostsBySlugs(EDITORS_CHOICE);
 ---
 
-<div class="EditorPicks">
-  <div class="part-title uppercase">Editors Picks</div>
+<div class="EditorsChoice">
+  <div class="part-title uppercase">Editor's Choice</div>
   <div class="mt-4 bg-white rounded p-4 shadow">
     {
       posts.map((item, index) => (
         <div class={`post-card ${index > 0 && "mt-4"} border-b`}>
           {item.data.cover && (
-            <a
-              class="post-cover mb-2 block"
-              style={`background-image: url("${item.data.cover}");`}
-              href={`/posts/${item.slug}/`}
-            />
+            <div class="mb-2">
+              <AspectBox
+                aspectRatio={3 / 1.6}
+                src={item.data.cover}
+                href={`/posts/${item.slug}/`}
+              />
+            </div>
           )}
           <div class="post-texts">
             <a
-              class="font-medium text-sm text-a1 hover-grey"
+              class="font-medium text-sm text-a1 hover-gray"
               href={`/posts/${item.slug}/`}
             >
               {item.data.title}

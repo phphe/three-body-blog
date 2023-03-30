@@ -25,24 +25,33 @@ const { posts } = Astro.props;
       <div class="post-texts flex-grow">
         <div>
           <a
-            class="text-xl font-semibold text-a1 hover-grey"
+            class="text-xl font-semibold text-a1 hover-gray max-md:text-base line-clamp-2"
             href={`/posts/${item.slug}`}
           >
             {item.data.title}
           </a>
+          <span
+            class="text-gray-400
+           text-sm italic ml-2 max-sm:hidden"
+          >
+            {item.data.tags
+              .slice(0, 2)
+              .map((v) => v.name)
+              .join(", ")}
+          </span>
         </div>
         <div class="post-description flex-grow text-a1 py-1">
           <div class="line-clamp-2">{item.data.description}</div>
         </div>
-        <div class="post-meta flex justify-between text-sm">
+        <div class="post-meta flex justify-between text-sm max-sm:text-xs">
           <a
-            class="hover-grey font-semibold uppercase text-a1 opacity-80"
+            class="hover-gray font-semibold uppercase text-a1 opacity-80"
             href={`/posts/${item.slug}/`}
           >
             Continue Reading
             <Icon class="ml-1 rotate-180 top-px relative" path={mdiMore} />
           </a>
-          <span class="post-date text-a1 opacity-70">
+          <span class="post-date text-a1 opacity-70 italic">
             <Icon path={mdiCalendar} class="top-px relative" />
             <FormattedDate date={item.data.pubDate} />
           </span>
@@ -65,7 +74,8 @@ const { posts } = Astro.props;
     flex-direction: column;
   }
   .post-description {
-    font-size: 0.9em;
-    min-height: 60px;
+    /* font-size: 0.9em; */
+    @apply text-sm;
+    min-height: 40px;
   }
 </style>

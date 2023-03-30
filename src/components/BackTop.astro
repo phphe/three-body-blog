@@ -1,8 +1,8 @@
 ---
 ---
 
-<span class="back-top hover-grey cursor-pointer" title="Back to Top">
-  <img src="/favicon.png" />
+<span class="back-top hover-gray cursor-pointer" title="Back to Top">
+  <img class="max-sm:invisible" src="/favicon.png" />
 </span>
 
 <script>
@@ -18,6 +18,9 @@
   hp.on(window, "resize", updateAnimateDistance);
   //
   let scrollEl = document.scrollingElement!;
+  if (scrollEl.scrollHeight > scrollEl.clientHeight) {
+    el.style.visibility = "unset";
+  }
   let lastScrollTop = 0;
   let tm: NodeJS.Timeout | null;
   let firstTranslate = true;
@@ -54,6 +57,7 @@
     top: 30px;
     color: #a7a7a7;
     transform: scale(0.8, 1);
+    visibility: hidden;
   }
   .back-top img {
     width: 30px;

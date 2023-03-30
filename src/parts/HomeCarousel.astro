@@ -1,0 +1,62 @@
+---
+import { css, getPostsBySlugs } from "@/plugins/utils";
+import Carousel from "@/components/Carousel.astro";
+import AspectBox from "@/components/AspectBox.astro";
+import Icon from "@/components/Icon.astro";
+import { mdiMore } from "@mdi/js";
+import { HOME_CAROUSEL_POSTS } from "@/consts";
+
+const posts = await getPostsBySlugs(HOME_CAROUSEL_POSTS);
+---
+
+<div class="shadow max-md:hidden">
+  <Carousel>
+    {
+      posts.map((item) => (
+        <div class="rounded overflow-hidden relative">
+          <AspectBox aspectRatio={9 / 3} src={item.data.cover}>
+            <a class="absolute top-0 left-0 w-full h-full" href={`/posts/${item.slug}`}></a>
+            <div class="carousel-item-texts absolute w-full bottom-0 text-white px-4 py-2">
+              <div class="line-clamp-1">
+                <a
+                  class="text-3xl font-medium leading-relaxed hover:underline underline-offset-8 decoration-dotted"
+                  href={`/posts/${item.slug}`}
+                >
+                  {item.data.title}
+                </a>
+              </div>
+              <div class="mt-4 line-clamp-2">{item.data.description}</div>
+              <div class="mt-4 flex items-center">
+                <a
+                  class="uppercase font-medium text-sm hover:underline"
+                  href={`/posts/${item.slug}`}
+                >
+                  Continue Reading
+                  <Icon class="ml-1 rotate-180 top-px relative" path={mdiMore} />
+                </a>
+                <span class="flex-grow">{}</span>
+                {item.data.tags.slice(0, 5).map((tag, i) => (
+                  <a
+                    class={`tag ${css(i > 0 && "ml-2")}`}
+                    href={`/tags/${tag.slug}`}
+                  >
+                    {tag.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </AspectBox>
+        </div>
+      ))
+    }
+  </Carousel>
+</div>
+
+<style>
+  .carousel-item-texts {
+    background-color: rgb(0 0 0 / 25%);
+  }
+  .tag {
+    @apply py-1 px-2 text-xs  border-white border rounded italic hover:font-semibold;
+  }
+</style>

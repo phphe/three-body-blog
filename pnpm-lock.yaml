@@ -10,7 +10,8 @@ specifiers:
   '@tailwindcss/typography': ^0.5.9
   astro: ^2.1.3
   dayjs: ^1.11.7
-  helper-js: ^3.1.3
+  helper-js: ^3.1.4
+  siema: ^1.5.1
   tailwindcss: ^3.0.24
 
 dependencies:
@@ -23,7 +24,8 @@ dependencies:
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.7
   astro: 2.1.3
   dayjs: 1.11.7
-  helper-js: 3.1.3
+  helper-js: 3.1.4
+  siema: 1.5.1
   tailwindcss: 3.2.7
 
 packages:
@@ -1801,8 +1803,8 @@ packages:
       space-separated-tokens: 2.0.2
     dev: false
 
-  /helper-js/3.1.3:
-    resolution: {integrity: sha512-9zWmI9wdHCAO6wXMuoysnmGfKKnlyVNVcYKnKichLYJ0gBL2wiYaGSgKckHSxuncyHOZW+GJQ8zDot1zND2+7g==}
+  /helper-js/3.1.4:
+    resolution: {integrity: sha512-O2fCQeQA7CnD9jq8vuXUCsDZAsCZ2v3hUoKA7H/4aUn5Gi5ML+AxrMy99pVDmcGfsh7OwAo/rr1C+sL8Bpkefw==}
     dependencies:
       '@babel/runtime': 7.21.0
     dev: false
@@ -3267,6 +3269,10 @@ packages:
       jsonc-parser: 3.2.0
       vscode-oniguruma: 1.7.0
       vscode-textmate: 6.0.0
+    dev: false
+
+  /siema/1.5.1:
+    resolution: {integrity: sha512-BUNFdTSbC9/2gA6r6teBY9B8O/XZOUz8kVyttpsbq4gbHF9PidUDzs6aPtiObhV4KoEuPQdhRvK5hPPi9lgSTg==}
     dev: false
 
   /signal-exit/3.0.7:

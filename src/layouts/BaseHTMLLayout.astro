@@ -4,8 +4,8 @@ import BaseHead from "../components/BaseHead.astro";
 import { SITE_TITLE, GOOGLE_ANALYTICS_ID } from "@/consts";
 import GoogleAnalytics from "@/components/GoogleAnalytics.astro";
 
-type Props = { htmlTitle: string; htmlDescription: string };
-const { htmlTitle, htmlDescription } = Astro.props;
+type Props = { htmlTitle: string; htmlDescription: string; image?: string };
+const { htmlTitle, htmlDescription, image } = Astro.props;
 const title = `${htmlTitle}${
   htmlTitle === SITE_TITLE ? "" : ` - ${SITE_TITLE}`
 }`;
@@ -13,8 +13,12 @@ const title = `${htmlTitle}${
 
 <html lang="en">
   <head>
-    {GOOGLE_ANALYTICS_ID && <GoogleAnalytics id={GOOGLE_ANALYTICS_ID} />}
-    <BaseHead title={title} description={htmlDescription} />
+    {
+      import.meta.env.PROD && GOOGLE_ANALYTICS_ID && (
+        <GoogleAnalytics id={GOOGLE_ANALYTICS_ID} />
+      )
+    }
+    <BaseHead title={title} description={htmlDescription} image={image} />
     <slot name="head" />
   </head>
   <body class="font-default">

@@ -5,6 +5,8 @@ set -e
 
 # 进入生成的文件夹
 cd dist
+# use git lfs
+cp ../.gitattributes ./
 # custom domain
 echo "threebodyblog.phphe.com" > CNAME
 # required. Or file or directory which starts with underscore can't be found. https://github.blog/2009-12-29-bypassing-jekyll-on-github-pages/

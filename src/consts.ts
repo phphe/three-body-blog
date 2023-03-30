@@ -7,3 +7,20 @@ export const SITE_DESCRIPTION =
 export const GOOGLE_ANALYTICS_ID = "G-1GMYWJ30VZ";
 export const DISQUS_ID = "three-body-blog";
 export const SITE_URL = "https://ThreeBodyBlog.phphe.com";
+export const LIST_SIZE = 8;
+export const EDITORS_CHOICE = [
+  "project-guzheng-video",
+  "waterdrop",
+  "two-dimensional-foil-dimensional-reduction-strike",
+  "project-guzheng",
+  "debut-of-the-wallfacers",
+  "my-three-body-zhangbeihai",
+];
+export const HOME_CAROUSEL_POSTS = [
+  "project-guzheng-video",
+  "waterdrop",
+  "two-dimensional-foil-dimensional-reduction-strike",
+  "project-guzheng",
+  "debut-of-the-wallfacers",
+  "my-three-body-zhangbeihai",
+];

@@ -1,0 +1,34 @@
+---
+export interface Props {
+  aspectRatio: number;
+  src?: string;
+  href?: string;
+}
+
+const { aspectRatio, src, href } = Astro.props;
+const style: any = {};
+if (src) {
+  style["background-image"] = `url("${src}")`;
+}
+style["padding-bottom"] = (1 / aspectRatio) * 100 + "%";
+style["aspect-ratio"] = aspectRatio;
+// style object to string
+const styleStr = Object.keys(style)
+  .map((key) => `${key}:${style[key]}`)
+  .join(";");
+const Cpt = href ? "a" : "div";
+---
+
+<Cpt class="aspect-box" style={styleStr} href={href}><slot /></Cpt>
+<style>
+  .aspect-box {
+    background-position: center;
+    background-size: cover;
+    display: block;
+  }
+  @supports (aspect-ratio: 1) {
+    .aspect-box {
+      padding-bottom: unset !important;
+    }
+  }
+</style>

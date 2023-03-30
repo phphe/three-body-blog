@@ -1,20 +1,28 @@
 ---
 import BackTop from "@/components/BackTop.astro";
-import EditorsPicks from "@/parts/EditorsPicks.astro";
+import EditorsChoice from "@/parts/EditorsChoice.astro";
 import MainFooter from "@/parts/MainFooter.astro";
 import MainHeader from "@/parts/MainHeader.astro";
 import BaseHTMLLayout from "./BaseHTMLLayout.astro";
-import { css } from "@/plugins/utils";
 
-type Props = { htmlTitle: string; htmlDescription: string; sidebar?: boolean };
-const { htmlTitle, htmlDescription } = Astro.props;
+type Props = {
+  htmlTitle: string;
+  htmlDescription: string;
+  image?: string;
+  sidebar?: boolean;
+};
+const { htmlTitle, htmlDescription, image } = Astro.props;
 let { sidebar } = Astro.props;
 if (sidebar == null) {
   sidebar = true;
 }
 ---
 
-<BaseHTMLLayout htmlTitle={htmlTitle} htmlDescription={htmlDescription}>
+<BaseHTMLLayout
+  htmlTitle={htmlTitle}
+  htmlDescription={htmlDescription}
+  image={image}
+>
   <style slot="head" is:global>
     body {
       background-color: rgb(238, 238, 238);
@@ -22,30 +30,23 @@ if (sidebar == null) {
   </style>
   <MainHeader />
   <slot name="main-body">
-    <div
-      class={`main-body container mx-auto mt-8 ${css(
-        !sidebar && "main-body--no-sidebar"
-      )}`}
-    >
-      <div class="main-content">
-        <slot />
+    <div class={`main-body container mx-auto mt-8`}>
+      <slot name="main-body-top" />
+      <div class="flex max-md:flex-wrap max-md:px-4">
+        <div class="main-content flex-grow">
+          <slot />
+        </div>
+        {
+          sidebar && (
+            <div class="main-sidebar w-80 ml-5 flex-shrink-0 max-md:ml-0 max-md:w-full max-md:mt-4">
+              <EditorsChoice />
+            </div>
+          )
+        }
       </div>
-      {
-        sidebar && (
-          <div class="main-sidebar w-80 ml-5">
-            <EditorsPicks />
-          </div>
-        )
-      }
     </div>
     <style>
       .main-body {
-        display: grid;
-        grid-template-columns: 1fr 300px;
-        gap: 20px;
-      }
-      .main-body--no-sidebar {
-        grid-template-columns: 1fr;
       }
     </style>
   </slot>
@@ -57,12 +58,22 @@ if (sidebar == null) {
       background-size: 180px;
     }
     .container {
-      max-width: 1000px;
+      max-width: 1100px;
+    }
+    @media (max-width: 1150px) {
+      .container {
+        max-width: 1000px;
+      }
+    }
+    @media (max-width: 1050px) {
+      .container {
+        max-width: 900px;
+      }
     }
     .part-title {
       @apply text-xl font-medium text-a1;
     }
-    .hover-grey:hover {
+    .hover-gray:hover {
       @apply text-gray-500;
     }
   </style>
