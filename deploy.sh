@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-
 # 确保脚本抛出遇到的错误
 set -e
 
@@ -18,8 +17,15 @@ git add -A
 git commit -m 'deploy'
 git commit -m 'rebuild pages' --allow-empty
 
+function red_echo() {
+  echo -e "\033[31m$1\033[0m"
+}
+
 # 如果发布到 https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:phphe/three-body-blog.git master:gh-pages
+git push -f git@github.com:phphe/three-body-blog.git master:gh-pages || {
+  # 捕获错误并输出错误信息
+  red_echo "Error, failed to push: $?"
+}
 
 rm -rf .git
 cd -
