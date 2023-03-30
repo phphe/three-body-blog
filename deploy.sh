@@ -25,7 +25,9 @@ function red_echo() {
 git push -f git@github.com:phphe/three-body-blog.git master:gh-pages || {
   # 捕获错误并输出错误信息
   red_echo "Error, failed to push: $?"
+  exit
 }
 
 rm -rf .git
 cd -
+echo "✌️ Success"
