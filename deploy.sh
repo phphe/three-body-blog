@@ -6,7 +6,7 @@ set -e
 cd dist
 rm .git -rf
 # use git lfs
-cp ../.gitattributes ./
+# cp ../.gitattributes ./ # github pages does not support git lfs
 # custom domain
 echo "threebodyblog.phphe.com" > CNAME
 # required. Or file or directory which starts with underscore can't be found. https://github.blog/2009-12-29-bypassing-jekyll-on-github-pages/
